@@ -28,7 +28,7 @@ export default function BookingPage() {
         <div className="absolute bottom-0 left-0 h-[500px] w-[500px] bg-gold/5 blur-[100px] rounded-full -translate-x-1/4 translate-y-1/4" />
 
         <div className="container-wide relative z-10">
-          <div className="grid gap-20 lg:grid-cols-[1fr_350px]">
+          <div className="grid gap-10 lg:gap-20 lg:grid-cols-[1fr_350px]">
             {/* Booking System */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}

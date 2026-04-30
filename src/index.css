@@ -26,6 +26,8 @@ body {
   color: var(--color-text);
   font-family: "DM Sans", sans-serif;
   font-weight: 400;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 img {
@@ -61,7 +63,7 @@ textarea {
 
 @media (max-width: 768px) {
   .display-heading {
-    font-size: 3.5rem !important;
+    font-size: 2.75rem !important;
     line-height: 1.1;
   }
 }

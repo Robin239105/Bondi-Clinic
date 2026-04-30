@@ -14,7 +14,7 @@ export default function PreFooterCTA() {
         <div className="rounded-[3.5rem] bg-primary overflow-hidden shadow-2xl border border-white/5">
           <div className="grid lg:grid-cols-2">
             {/* Content Side */}
-            <div className="p-12 md:p-20 lg:p-24 flex flex-col justify-center relative z-20">
+            <div className="p-8 md:p-20 lg:p-24 flex flex-col justify-center relative z-20">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}

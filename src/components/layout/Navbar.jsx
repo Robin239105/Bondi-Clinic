@@ -19,7 +19,7 @@ function Logo() {
   return (
     <Link
       to="/"
-      className="group relative flex-shrink-0 h-12 lg:h-20 transition-all duration-300 hover:scale-105 active:scale-95"
+      className="group relative flex-shrink-0 h-10 lg:h-20 transition-all duration-300 hover:scale-105 active:scale-95"
       aria-label="Bondi Skin Clinic home"
     >
       <img 
@@ -179,7 +179,7 @@ export default function Navbar({ announcementVisible = true }) {
       className="fixed inset-x-0 z-40 py-3 lg:py-4"
     >
       <div
-        className={`container-wide flex h-16 lg:h-24 items-center justify-between gap-4 lg:gap-10 rounded-[2rem] lg:rounded-[3rem] border border-primary/5 shadow-[0_18px_60px_rgba(26,20,16,0.12)] backdrop-blur-2xl transition-all px-6 lg:px-12 ${
+        className={`container-wide flex h-16 lg:h-24 items-center justify-between gap-3 lg:gap-10 rounded-[2rem] lg:rounded-[3rem] border border-primary/5 shadow-[0_18px_60px_rgba(26,20,16,0.12)] backdrop-blur-2xl transition-all px-4 lg:px-12 ${
           scrolled ? "bg-white" : "bg-white/95"
         }`}
       >

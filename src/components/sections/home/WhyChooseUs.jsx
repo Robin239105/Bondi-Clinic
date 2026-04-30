@@ -69,7 +69,7 @@ export default function WhyChooseUs() {
               iconColor: "text-primary",
             },
           ].map((feature) => (
-            <div key={feature.title} className={`${feature.bg} rounded-[2rem] p-10 transition-transform hover:-translate-y-1`}>
+            <div key={feature.title} className={`${feature.bg} rounded-[2rem] p-8 md:p-10 transition-transform hover:-translate-y-1`}>
               <div className={`${feature.iconBg} ${feature.iconColor} flex h-14 w-14 items-center justify-center rounded-2xl`}>
                 <feature.Icon size={28} />
               </div>

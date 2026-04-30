@@ -72,6 +72,16 @@ textarea {
     font-size: 2.75rem !important;
     line-height: 1.1;
   }
+  
+  .section-pad {
+    padding-block: 4rem;
+  }
+
+  /* Reduce button padding on mobile to prevent overflow */
+  .label-text.px-8, .label-text.px-12, .label-text.px-14 {
+    padding-inline: 1.5rem !important;
+    letter-spacing: 0.15em !important;
+  }
 }
 
 .label-text {

@@ -15,8 +15,8 @@ export default function TeamSection() {
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
           </div>
-          {/* Decorative element */}
-          <div className="absolute -bottom-6 -left-6 h-32 w-32 rounded-full bg-gold/20 backdrop-blur-xl -z-10" />
+          {/* Decorative element - Hidden on mobile to prevent overflow */}
+          <div className="absolute -bottom-6 -left-6 h-32 w-32 rounded-full bg-gold/20 backdrop-blur-xl -z-10 hidden lg:block" />
         </div>
 
         {/* Right: Info */}

@@ -18,7 +18,7 @@ export default function BeforeAfterSection() {
             Every glow tells a story—discover the difference expert care can make. Our results speak for themselves through clinical precision and personalized care plans.
           </p>
 
-          <div className="mt-12 rounded-[2rem] bg-cream p-10">
+          <div className="mt-12 rounded-[2rem] bg-cream p-6 md:p-10">
             <div className="flex gap-1 text-gold mb-6">
               {[...Array(5)].map((_, i) => (
                 <Star key={i} size={18} fill="currentColor" />
@@ -38,9 +38,9 @@ export default function BeforeAfterSection() {
             </div>
           </div>
 
-          <div className="mt-10 flex gap-4">
-            <Button href="/booking">Book a Consultation</Button>
-            <Button href="/skin" variant="outline">View All Results</Button>
+          <div className="mt-10 flex flex-col sm:flex-row gap-4">
+            <Button href="/booking" className="w-full sm:w-auto">Book a Consultation</Button>
+            <Button href="/skin" variant="outline" className="w-full sm:w-auto">View All Results</Button>
           </div>
         </div>
 
@@ -51,7 +51,8 @@ export default function BeforeAfterSection() {
           </div>
           
           {/* Decorative Badge */}
-          <div className="absolute -bottom-6 -right-6 h-32 w-32 rounded-full bg-gold p-1 shadow-lg">
+          {/* Decorative Badge - Hidden or repositioned on mobile */}
+          <div className="absolute -bottom-4 -right-4 lg:-bottom-6 lg:-right-6 h-24 w-24 lg:h-32 lg:w-32 rounded-full bg-gold p-1 shadow-lg hidden sm:block">
             <div className="flex h-full w-full flex-col items-center justify-center rounded-full border border-white/20 text-center text-white">
               <div className="font-display text-2xl font-bold leading-none italic">100%</div>
               <div className="text-[10px] uppercase tracking-widest mt-1">Refined</div>

@@ -176,7 +176,7 @@ export default function Navbar({ announcementVisible = true }) {
       initial={false}
       animate={{ top: announcementVisible ? 36 : 0 }}
       transition={{ duration: 0.2, ease: "easeInOut" }}
-      className="fixed inset-x-0 z-40 px-3 lg:px-6 py-3 lg:py-4"
+      className="fixed inset-x-0 z-40 py-3 lg:py-4"
     >
       <div
         className={`container-wide flex h-16 lg:h-24 items-center justify-between gap-4 lg:gap-10 rounded-[2rem] lg:rounded-[3rem] border border-primary/5 shadow-[0_18px_60px_rgba(26,20,16,0.12)] backdrop-blur-2xl transition-all px-6 lg:px-12 ${

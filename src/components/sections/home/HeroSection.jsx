@@ -103,7 +103,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.6 }}
-                className="absolute top-5 -right-4 lg:top-10 lg:-right-8 z-30 glass rounded-2xl px-4 py-3 lg:px-6 lg:py-4 flex items-center gap-3 lg:gap-4 shadow-xl border border-white/50 scale-75 lg:scale-100"
+                className="absolute top-5 -right-4 lg:top-10 lg:-right-8 z-30 glass rounded-2xl px-4 py-3 lg:px-6 lg:py-4 flex items-center gap-3 lg:gap-4 shadow-xl border border-white/50 scale-75 lg:scale-100 hidden lg:flex"
               >
                 <div className="h-8 w-8 lg:h-10 lg:w-10 rounded-xl bg-primary/10 flex items-center justify-center">
                   <Search size={16} className="text-primary" />
@@ -141,7 +141,7 @@ export default function HeroSection() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1 }}
-                className="absolute -bottom-10 -right-2 lg:bottom-4 lg:-right-4 z-30 glass rounded-[2rem] lg:rounded-[2.5rem] p-5 lg:p-6 shadow-2xl w-[85%] sm:w-72 scale-90 lg:scale-100 origin-bottom-right"
+                className="absolute -bottom-10 -right-2 lg:bottom-4 lg:-right-4 z-30 glass rounded-[2rem] lg:rounded-[2.5rem] p-5 lg:p-6 shadow-2xl w-[85%] sm:w-72 scale-90 lg:scale-100 origin-bottom-right hidden lg:block"
               >
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-[9px] lg:text-[10px] font-bold uppercase tracking-widest text-primary">Patient Plan</span>

@@ -1,0 +1,30 @@
+export const images = {
+  hero: "/images/room.png",
+  clinic: "/images/room.png", 
+  facial: "/images/deep-cleansing-facial.jpeg-2.jpg", 
+  laser: "/images/IPLLaser.png",
+  injectables: "/images/Injectable-Treatment-Steven-Daines-MD-Appearance-Center-Newport-Beach-Orange-County-Plastic-Surgery.11.1-1.jpg",
+  body: "/images/truSculpt-before-and-after-tummy-scaled-e1655895490864.jpg",
+  prp: "/images/Biostimulators-main-services-dermalignmedspa.jpg",
+  team: "/images/WhatsApp-Image-2024-11-21-at-8.53.35-AM-scaled-e1732751316210.jpeg",
+  shop: "/images/Why_Cosmedix.webp",
+  before: "/images/tixel-before.png",
+  after: "/images/tixel-after.png",
+  treatmentRoom: "/images/room.png",
+  maskTreatment: "/images/deep-cleansing-facial.jpeg-2.jpg",
+  skinDevice: "/images/IPLLaser.png",
+  rod: "/images/Rod.jpeg",
+  ana: "/images/WhatsApp-Image-2024-05-28-at-6.22.33-AM.jpeg",
+  dermalBefore: "/images/dermal-before.png",
+  dermalAfter: "/images/dermal-after.png",
+  iplBefore: "/images/IPL-Photo-Rejuvenation-Aging-Before-After.webp",
+};
+
+export const galleryImages = [
+  "/images/IPLLaser.png",
+  "/images/room.png",
+  "/images/WhatsApp-Image-2024-11-21-at-8.53.35-AM-scaled-e1732751316210.jpeg",
+  "/images/Biostimulators-main-services-dermalignmedspa.jpg",
+  "/images/Why_Cosmedix.webp",
+  "/images/deep-cleansing-facial.jpeg-2.jpg",
+];

@@ -1,0 +1,14 @@
+import TreatmentCard from "../../ui/TreatmentCard";
+import { skinTreatments } from "../../../data/skinTreatments";
+
+export default function TreatmentList() {
+  return (
+    <section className="section-pad bg-cream">
+      <div className="container-wide">
+        {skinTreatments.map((treatment, index) => (
+          <TreatmentCard key={treatment.id} {...treatment} index={index} />
+        ))}
+      </div>
+    </section>
+  );
+}

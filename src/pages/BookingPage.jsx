@@ -44,7 +44,7 @@ export default function BookingPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="rounded-[2.5rem] border border-primary/5 bg-white p-10 shadow-xl"
+                className="rounded-[2.5rem] border border-primary/5 bg-white p-6 sm:p-10 shadow-xl"
               >
                 <h3 className="font-display text-2xl text-primary italic mb-8">Visit the Clinic</h3>
                 
@@ -85,7 +85,7 @@ export default function BookingPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.3 }}
-                className="rounded-[2.5rem] border border-primary/5 bg-primary p-10 shadow-xl text-white"
+                className="rounded-[2.5rem] border border-primary/5 bg-primary p-6 sm:p-10 shadow-xl text-white"
               >
                 <div className="flex items-center gap-4 mb-6">
                   <Clock className="text-gold" size={24} />

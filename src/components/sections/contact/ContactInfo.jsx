@@ -9,13 +9,13 @@ const details = [
 
 export default function ContactInfo() {
   return (
-    <div className="bg-surface p-8 shadow-warm">
+    <div className="bg-surface p-6 sm:p-8 shadow-warm w-full max-w-full overflow-hidden">
       <h2 className="font-display text-5xl text-primary">Visit Bondi Skin Clinic</h2>
       <div className="mt-8 grid gap-5">
         {details.map(([Icon, value]) => (
           <div key={value} className="flex gap-4">
-            <Icon className="mt-1 text-gold" size={20} />
-            <p className="leading-7">{value}</p>
+            <Icon className="mt-1 flex-shrink-0 text-gold" size={20} />
+            <p className="break-words leading-7">{value}</p>
           </div>
         ))}
       </div>

@@ -24,12 +24,12 @@ export default function ContactPage() {
       
       <section className="section-pad bg-cream">
         <div className="container-wide">
-          <div className="overflow-hidden rounded-[3rem] bg-white shadow-2xl">
+          <div className="rounded-[2.5rem] border border-primary/5 bg-white p-6 sm:p-10 shadow-xl overflow-hidden">
             <div className="grid lg:grid-cols-2">
-              <div className="bg-primary p-12 lg:p-20 text-white">
+              <div className="bg-primary p-6 sm:p-12 lg:p-20 text-white">
                 <ContactInfo />
               </div>
-              <div className="p-12 lg:p-20">
+              <div className="p-6 sm:p-12 lg:p-20">
                 <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
                   <h3 className="font-display text-4xl text-primary">Send a Message</h3>
                   <Link to="/booking" className="text-[10px] uppercase tracking-widest font-black text-gold hover:text-primary transition-colors">Ready to book?</Link>

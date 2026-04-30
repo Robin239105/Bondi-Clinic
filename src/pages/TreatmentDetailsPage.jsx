@@ -105,7 +105,7 @@ export default function TreatmentDetailsPage() {
 
               {/* Benefits */}
               <div className="grid gap-8 sm:grid-cols-2">
-                <div className="bg-white p-10 rounded-[2.5rem] shadow-sm">
+                <div className="bg-white p-6 sm:p-10 rounded-[2.5rem] shadow-sm">
                   <div className="h-12 w-12 bg-gold/10 rounded-2xl flex items-center justify-center text-gold mb-6">
                     <CheckCircle2 size={24} />
                   </div>
@@ -126,7 +126,7 @@ export default function TreatmentDetailsPage() {
                   </ul>
                 </div>
 
-                <div className="bg-primary text-white p-10 rounded-[2.5rem] shadow-xl">
+                <div className="bg-primary text-white p-6 sm:p-10 rounded-[2.5rem] shadow-xl">
                   <div className="h-12 w-12 bg-white/10 rounded-2xl flex items-center justify-center text-gold mb-6">
                     <Clock size={24} />
                   </div>
@@ -134,7 +134,7 @@ export default function TreatmentDetailsPage() {
                   <div className="mt-8 space-y-6">
                     <div className="flex justify-between border-b border-white/10 pb-4">
                       <span className="text-white/70 uppercase tracking-widest text-[10px]">Duration</span>
-                      <span className="font-medium">45 - 60 Minutes</span>
+                      <span className="font-medium">45 - 60 Min</span>
                     </div>
                     <div className="flex justify-between border-b border-white/10 pb-4">
                       <span className="text-white/70 uppercase tracking-widest text-[10px]">Downtime</span>
@@ -142,7 +142,7 @@ export default function TreatmentDetailsPage() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-white/70 uppercase tracking-widest text-[10px]">Anesthetic</span>
-                      <span className="font-medium">Topical Available</span>
+                      <span className="font-medium">Available</span>
                     </div>
                   </div>
                 </div>
@@ -185,7 +185,7 @@ export default function TreatmentDetailsPage() {
             {/* Right Column: Sidebar */}
             <div className="space-y-12">
               {/* Pricing Card */}
-              <div className="sticky top-32 bg-white p-10 lg:p-12 rounded-[3rem] shadow-2xl border border-primary/5">
+              <div className="sticky top-32 bg-white p-6 lg:p-12 rounded-[3rem] shadow-2xl border border-primary/5">
                 <h3 className="font-display text-3xl text-primary">Treatment Investment</h3>
                 <div className="mt-10 space-y-6">
                   {treatment.prices.map((p, i) => (
@@ -249,7 +249,7 @@ export default function TreatmentDetailsPage() {
             <div className="aspect-square rounded-[3rem] overflow-hidden shadow-2xl">
               <img src="/images/room.png" alt="Clinical Environment" className="h-full w-full object-cover" />
             </div>
-            <div className="absolute -bottom-10 -left-10 h-64 w-64 bg-gold/20 blur-[100px] rounded-full" />
+            <div className="absolute -bottom-10 -left-10 h-64 w-64 bg-gold/20 blur-[100px] rounded-full hidden lg:block" />
           </div>
         </div>
       </section>

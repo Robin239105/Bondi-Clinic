@@ -43,7 +43,7 @@ export default function BookingSystem() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl rounded-[3rem] border border-primary/5 bg-white p-8 shadow-[0_40px_100px_rgba(26,20,16,0.12)] md:p-16">
+    <div className="mx-auto max-w-4xl rounded-[3rem] border border-primary/5 bg-white p-6 md:p-16 shadow-[0_40px_100px_rgba(26,20,16,0.12)]">
       {/* Progress Bar */}
       <div className="mb-16 flex items-center justify-between gap-4 px-4">
         {[1, 2, 3, 4].map((i) => (
@@ -77,7 +77,7 @@ export default function BookingSystem() {
                 <button
                   key={cat.id}
                   onClick={() => handleCategorySelect(cat)}
-                  className="group flex items-center justify-between rounded-3xl border border-primary/5 bg-cream/30 p-8 text-left transition-all hover:bg-primary hover:text-white"
+                  className="group flex flex-col sm:flex-row items-center justify-between rounded-3xl border border-primary/5 bg-cream/30 p-6 sm:p-8 text-left transition-all hover:bg-primary hover:text-white"
                 >
                   <div className="flex items-center gap-6">
                     <span className="text-4xl grayscale group-hover:grayscale-0 transition-all">{cat.icon}</span>
@@ -112,7 +112,7 @@ export default function BookingSystem() {
                 <button
                   key={t.id}
                   onClick={() => handleServiceSelect(t)}
-                  className="group flex flex-col items-start rounded-3xl border border-primary/5 bg-cream/30 p-8 text-left transition-all hover:bg-primary hover:text-white"
+                  className="group flex flex-col items-start rounded-3xl border border-primary/5 bg-cream/30 p-6 sm:p-8 text-left transition-all hover:bg-primary hover:text-white"
                 >
                   <div className="flex w-full items-center justify-between">
                     <span className="font-display text-2xl">{t.name}</span>
@@ -144,23 +144,23 @@ export default function BookingSystem() {
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Full Name</label>
-                  <input required type="text" placeholder="Sarah Jenkins" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                  <input required type="text" placeholder="Sarah Jenkins" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Phone Number</label>
-                  <input required type="tel" placeholder="0400 000 000" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                  <input required type="tel" placeholder="0400 000 000" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Email Address</label>
-                <input required type="email" placeholder="sarah@example.com" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                <input required type="email" placeholder="sarah@example.com" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Clinical Notes / Concerns</label>
-                <textarea placeholder="Tell us about your skin goals..." className="w-full h-32 rounded-2xl border border-primary/5 bg-cream/30 p-6 focus:border-primary focus:bg-white transition-all outline-none resize-none" />
+                <textarea placeholder="Tell us about your skin goals..." className="w-full h-32 rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none resize-none" />
               </div>
               
-              <div className="mt-8 rounded-3xl bg-primary p-8 text-white">
+              <div className="mt-8 rounded-3xl bg-primary p-6 sm:p-8 text-white">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center text-gold">

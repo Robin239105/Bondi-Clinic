@@ -45,13 +45,14 @@ export default function BookingSystem() {
   return (
     <div className="mx-auto max-w-4xl rounded-[3rem] border border-primary/5 bg-white p-6 md:p-16 shadow-[0_40px_100px_rgba(26,20,16,0.12)]">
       {/* Progress Bar */}
-      <div className="mb-16 flex items-center justify-between gap-4 px-4">
+      <div className="mb-12 md:mb-16 flex items-center justify-between gap-2 sm:gap-4 px-2 sm:px-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="flex flex-1 items-center gap-4">
-            <div className={`h-12 w-12 rounded-full border-2 flex items-center justify-center transition-all duration-500 ${
+          <div key={i} className="flex flex-1 items-center gap-2 sm:gap-4">
+            <div className={`h-8 w-8 sm:h-12 sm:w-12 rounded-full border-2 flex items-center justify-center text-xs sm:text-base transition-all duration-500 ${
               step >= i ? "border-primary bg-primary text-white" : "border-primary/10 text-primary/60"
             }`}>
-              {step > i ? <CheckCircle2 size={20} /> : i}
+              {step > i ? <CheckCircle2 size={16} className="sm:hidden" /> : null}
+              {step > i ? <CheckCircle2 size={20} className="hidden sm:block" /> : i}
             </div>
             {i < 4 && <div className={`h-px flex-1 transition-all duration-700 ${step > i ? "bg-primary" : "bg-primary/10"}`} />}
           </div>
@@ -178,7 +179,7 @@ export default function BookingSystem() {
                 </div>
               </div>
 
-              <button type="submit" className="w-full rounded-full bg-primary py-8 font-bold uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]">
+              <button type="submit" className="w-full rounded-full bg-primary py-5 sm:py-8 font-bold uppercase tracking-[0.1em] sm:tracking-widest text-white shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] text-xs sm:text-base">
                 Request Professional Appointment
               </button>
             </form>

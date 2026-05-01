@@ -1,68 +1,61 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
-import { ChevronRight, CreditCard, ShoppingBag, Truck, Store, Calendar, Clock, Lock, CheckCircle2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ChevronRight, ShoppingBag, Truck, Store, Calendar, Clock, Lock, CheckCircle2, Banknote, Loader2, AlertCircle } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/ui/Button";
 
-import { useNavigate } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 export default function CheckoutPage() {
   const { items, cartTotal, cartCount, setLastOrder, clearCart } = useCart();
-  const [method, setMethod] = useState("shipping"); // shipping or pickup
-  const [cardData, setCardData] = useState({ number: "", expiry: "", cvc: "" });
+  const [deliveryMethod, setDeliveryMethod] = useState("shipping");
+  const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const navigate = useNavigate();
 
-  const getCardType = (number) => {
-    const cleanNumber = number.replace(/\s/g, "");
-    if (/^4/.test(cleanNumber)) return "visa";
-    if (/^5[1-5]/.test(cleanNumber)) return "mastercard";
-    if (/^3[47]/.test(cleanNumber)) return "amex";
-    return null;
-  };
-
-  const handleCardNumberChange = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 16) value = value.slice(0, 16);
-    const formatted = value.match(/.{1,4}/g)?.join(" ") || "";
-    setCardData({ ...cardData, number: formatted });
-  };
-
-  const handleExpiryChange = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    if (value.length > 4) value = value.slice(0, 4);
-    if (value.length > 2) {
-      value = value.slice(0, 2) + " / " + value.slice(2);
-    }
-    setCardData({ ...cardData, expiry: value });
-  };
-
-  const handleCvcChange = (e) => {
-    let value = e.target.value.replace(/\D/g, "");
-    const limit = getCardType(cardData.number) === "amex" ? 4 : 3;
-    if (value.length > limit) value = value.slice(0, limit);
-    setCardData({ ...cardData, cvc: value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const orderData = {
-      orderId: `BSC-${Math.floor(Math.random() * 90000) + 10000}`,
-      date: new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' }),
-      items: [...items],
-      total: cartTotal,
-      method,
-      customer: {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        address: method === "shipping" ? formData.get("address") : "Clinic Pickup",
-      }
-    };
-    
-    setLastOrder(orderData);
-    clearCart();
-    navigate("/order-confirmation");
+    if (items.length === 0) return;
+    setSubmitError("");
+    setSubmitting(true);
+    const fd = new FormData(e.target);
+    try {
+      const res = await fetch(`${API_URL}/api/orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer_name: fd.get("name"),
+          customer_email: fd.get("email"),
+          customer_address: deliveryMethod === "shipping" ? fd.get("address") : "Clinic Pickup",
+          delivery_method: deliveryMethod,
+          payment_method: paymentMethod,
+          total: cartTotal,
+          items: items.map((item) => ({
+            product_name: item.name,
+            product_price: parseFloat(String(item.price).replace(/[^0-9.]/g, "")),
+            quantity: item.quantity,
+          })),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.errors?.[0]?.msg || data?.error || "Order failed");
+      setLastOrder({
+        orderId: data.order?.order_ref,
+        date: new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }),
+        items: [...items],
+        total: cartTotal,
+        method: deliveryMethod,
+        customer: { name: fd.get("name"), email: fd.get("email") },
+      });
+      clearCart();
+      navigate("/order-confirmation");
+    } catch (err) {
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -108,9 +101,9 @@ export default function CheckoutPage() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <button
                   type="button"
-                  onClick={() => setMethod("shipping")}
+                  onClick={() => setDeliveryMethod("shipping")}
                   className={`flex flex-col items-center gap-4 rounded-3xl border p-8 transition-all ${
-                    method === "shipping" ? "border-primary bg-primary text-white shadow-xl" : "border-primary/5 bg-white text-primary hover:border-primary/20"
+                    deliveryMethod === "shipping" ? "border-primary bg-primary text-white shadow-xl" : "border-primary/5 bg-white text-primary hover:border-primary/20"
                   }`}
                 >
                   <Truck size={32} />
@@ -118,9 +111,9 @@ export default function CheckoutPage() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setMethod("pickup")}
+                  onClick={() => setDeliveryMethod("pickup")}
                   className={`flex flex-col items-center gap-4 rounded-3xl border p-8 transition-all ${
-                    method === "pickup" ? "border-primary bg-primary text-white shadow-xl" : "border-primary/5 bg-white text-primary hover:border-primary/20"
+                    deliveryMethod === "pickup" ? "border-primary bg-primary text-white shadow-xl" : "border-primary/5 bg-white text-primary hover:border-primary/20"
                   }`}
                 >
                   <Store size={32} />
@@ -128,7 +121,7 @@ export default function CheckoutPage() {
                 </button>
               </div>
 
-              {method === "shipping" ? (
+              {deliveryMethod === "shipping" ? (
                 <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500">
                   <div className="space-y-2">
                     <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Shipping Address</label>
@@ -142,7 +135,7 @@ export default function CheckoutPage() {
                 </div>
               ) : (
                 <div className="space-y-6 animate-in fade-in slide-in-from-top-4 duration-500 rounded-[2.5rem] bg-stone-100 p-8">
-                  <p className="text-sm text-primary/90 italic text-center mb-6">Select a convenient clinical time for collection.</p>
+                  <p className="text-sm text-primary/90 italic text-center mb-6">Select a convenient time to collect from the clinic.</p>
                   <div className="grid gap-6 md:grid-cols-2">
                     <div className="space-y-2">
                       <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70 flex items-center gap-2"><Calendar size={12} /> Preferred Date</label>
@@ -161,67 +154,60 @@ export default function CheckoutPage() {
             <section className="space-y-8">
               <div className="flex items-center gap-4">
                 <div className="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-display text-lg">3</div>
-                <h2 className="font-display text-3xl text-primary italic">Secure Payment</h2>
+                <h2 className="font-display text-3xl text-primary italic">Payment Method</h2>
               </div>
-              
-              <div className="rounded-[2.5rem] bg-white p-8 shadow-sm border border-primary/5 space-y-8">
-                <div className="flex items-center justify-between border-b border-primary/5 pb-6">
-                  <div className="flex items-center gap-4">
-                    <CreditCard className="text-gold" size={24} />
-                    <span className="font-display text-xl">Credit or Debit Card</span>
-                  </div>
-                  <div className="flex gap-3">
-                    <div className={`px-2 py-1 rounded border text-[10px] font-bold transition-all ${getCardType(cardData.number) === "visa" ? "border-blue-600 text-blue-600 bg-blue-50" : "border-stone-100 text-stone-300"}`}>VISA</div>
-                    <div className={`px-2 py-1 rounded border text-[10px] font-bold transition-all ${getCardType(cardData.number) === "mastercard" ? "border-red-500 text-red-500 bg-red-50" : "border-stone-100 text-stone-300"}`}>MC</div>
-                    <div className={`px-2 py-1 rounded border text-[10px] font-bold transition-all ${getCardType(cardData.number) === "amex" ? "border-blue-400 text-blue-400 bg-blue-50" : "border-stone-100 text-stone-300"}`}>AMEX</div>
-                  </div>
-                </div>
 
-                <div className="grid gap-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Card Number</label>
-                    <div className="relative">
-                      <input 
-                        required 
-                        type="text" 
-                        value={cardData.number}
-                        onChange={handleCardNumberChange}
-                        placeholder="0000 0000 0000 0000" 
-                        className="w-full rounded-2xl border border-primary/5 bg-cream/20 p-6 pr-14 focus:border-primary transition-all outline-none font-mono" 
-                      />
-                      <Lock className="absolute right-6 top-1/2 -translate-y-1/2 text-primary/50" size={18} />
-                    </div>
-                  </div>
-                  <div className="grid gap-6 md:grid-cols-2">
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Expiry Date</label>
-                      <input 
-                        required 
-                        type="text" 
-                        value={cardData.expiry}
-                        onChange={handleExpiryChange}
-                        placeholder="MM / YY" 
-                        className="w-full rounded-2xl border border-primary/5 bg-cream/20 p-6 focus:border-primary transition-all outline-none font-mono" 
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">CVC Code</label>
-                      <input 
-                        required 
-                        type="text" 
-                        value={cardData.cvc}
-                        onChange={handleCvcChange}
-                        placeholder="123" 
-                        className="w-full rounded-2xl border border-primary/5 bg-cream/20 p-6 focus:border-primary transition-all outline-none font-mono" 
-                      />
-                    </div>
-                  </div>
-                </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("cash")}
+                  className={`flex flex-col items-center gap-4 rounded-3xl border p-8 transition-all ${
+                    paymentMethod === "cash" ? "border-primary bg-primary text-white shadow-xl" : "border-primary/5 bg-white text-primary hover:border-primary/20"
+                  }`}
+                >
+                  <Banknote size={32} />
+                  <span className="font-display text-xl">Cash</span>
+                  <span className="text-xs opacity-70">Pay at clinic or on delivery</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPaymentMethod("paypal")}
+                  className={`flex flex-col items-center gap-4 rounded-3xl border p-8 transition-all ${
+                    paymentMethod === "paypal" ? "border-primary bg-primary text-white shadow-xl" : "border-primary/5 bg-white text-primary hover:border-primary/20"
+                  }`}
+                >
+                  <span className="text-3xl font-bold" style={{ fontFamily: "sans-serif" }}>P</span>
+                  <span className="font-display text-xl">PayPal</span>
+                  <span className="text-xs opacity-70">Pay securely via PayPal</span>
+                </button>
               </div>
+
+              {paymentMethod === "cash" && (
+                <div className="rounded-2xl bg-stone-50 border border-primary/5 p-6 text-sm text-primary/70">
+                  <p>You will pay <strong className="text-primary">${cartTotal.toFixed(2)}</strong> in cash {deliveryMethod === "pickup" ? "when you collect from the clinic" : "upon delivery"}. We will confirm your order by email.</p>
+                </div>
+              )}
+              {paymentMethod === "paypal" && (
+                <div className="rounded-2xl bg-blue-50 border border-blue-100 p-6 text-sm text-blue-800">
+                  <p>After placing your order you will receive a PayPal payment link via email to complete the transaction of <strong>${cartTotal.toFixed(2)}</strong>.</p>
+                </div>
+              )}
             </section>
 
-            <button type="submit" className="w-full rounded-full bg-primary py-8 font-bold uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]">
-              Complete Selection — ${cartTotal.toFixed(2)}
+            {submitError && (
+              <div className="flex items-center gap-3 rounded-2xl bg-red-50 border border-red-100 p-4 text-sm text-red-700">
+                <AlertCircle size={16} className="shrink-0" /> {submitError}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={submitting || items.length === 0}
+              className="w-full rounded-full bg-primary py-8 font-bold uppercase tracking-widest text-white shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+            >
+              {submitting
+                ? <><Loader2 size={20} className="animate-spin" /> Placing Order…</>
+                : `Place Order — $${cartTotal.toFixed(2)}`}
             </button>
           </form>
 
@@ -255,7 +241,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-primary/70 uppercase tracking-widest font-bold">Shipping</span>
-                  <span className="text-gold italic">{method === "pickup" ? "Free" : "Calculated at next step"}</span>
+                  <span className="text-gold italic">{deliveryMethod === "pickup" ? "Free" : "Calculated at next step"}</span>
                 </div>
                 <div className="flex justify-between pt-6 border-t border-primary/5">
                   <span className="font-display text-2xl text-primary">Total</span>

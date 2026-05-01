@@ -1,12 +1,14 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { ChevronRight, Calendar, User, ClipboardList, CheckCircle2, ArrowLeft } from "lucide-react";
+import { ChevronRight, Calendar, User, ClipboardList, CheckCircle2, ArrowLeft, MessageCircle, AlertCircle, Loader2 } from "lucide-react";
 import Button from "../../ui/Button";
 import { skinTreatments } from "../../../data/skinTreatments";
 import { bodyTreatments } from "../../../data/bodyTreatments";
 import { laserTreatments } from "../../../data/laserTreatments";
 import { injectablesTreatments } from "../../../data/injectablesTreatments";
 import { prpTreatments } from "../../../data/prpTreatments";
+
+const API_URL = import.meta.env.VITE_API_URL || "";
 
 const categories = [
   { id: "skin", label: "Skin Health", icon: "✨", treatments: skinTreatments },
@@ -21,8 +23,11 @@ export default function BookingSystem() {
   const [selection, setSelection] = useState({
     category: null,
     service: null,
-    details: { name: "", email: "", phone: "", notes: "" }
+    details: { name: "", email: "", phone: "", preferred_date: "", preferred_time: "", notes: "" }
   });
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [whatsappUrl, setWhatsappUrl] = useState("");
 
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
@@ -37,9 +42,36 @@ export default function BookingSystem() {
     nextStep();
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    nextStep();
+    setSubmitError("");
+    setSubmitting(true);
+    const formData = new FormData(e.target);
+    try {
+      const res = await fetch(`${API_URL}/api/bookings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          phone: formData.get("phone"),
+          category: selection.category?.id,
+          service_name: selection.service?.name,
+          service_price: selection.service?.prices?.[0]?.amount || "",
+          preferred_date: formData.get("preferred_date") || null,
+          preferred_time: formData.get("preferred_time") || null,
+          notes: formData.get("notes") || "",
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.errors?.[0]?.msg || data?.error || "Submission failed");
+      setWhatsappUrl(data.whatsappUrl || "");
+      nextStep();
+    } catch (err) {
+      setSubmitError(err.message || "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -145,21 +177,37 @@ export default function BookingSystem() {
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Full Name</label>
-                  <input required type="text" placeholder="Sarah Jenkins" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                  <input required name="name" type="text" placeholder="Sarah Jenkins" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Phone Number</label>
-                  <input required type="tel" placeholder="0400 000 000" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                  <input required name="phone" type="tel" placeholder="0400 000 000" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
                 </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Email Address</label>
-                <input required type="email" placeholder="sarah@example.com" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                <input required name="email" type="email" placeholder="sarah@example.com" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+              </div>
+              <div className="grid gap-6 md:grid-cols-2">
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Preferred Date (optional)</label>
+                  <input name="preferred_date" type="date" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Preferred Time (optional)</label>
+                  <input name="preferred_time" type="time" className="w-full rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none" />
+                </div>
               </div>
               <div className="space-y-2">
                 <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-primary/70">Clinical Notes / Concerns</label>
-                <textarea placeholder="Tell us about your skin goals..." className="w-full h-32 rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none resize-none" />
+                <textarea name="notes" placeholder="Tell us about your skin goals..." className="w-full h-32 rounded-2xl border border-primary/5 bg-cream/30 p-4 sm:p-6 focus:border-primary focus:bg-white transition-all outline-none resize-none" />
               </div>
+              {submitError && (
+                <div className="flex items-center gap-3 rounded-2xl bg-red-50 border border-red-100 p-4 text-sm text-red-700">
+                  <AlertCircle size={16} className="shrink-0" />
+                  {submitError}
+                </div>
+              )}
               
               <div className="mt-8 rounded-3xl bg-primary p-6 sm:p-8 text-white">
                 <div className="flex items-center justify-between">
@@ -179,8 +227,8 @@ export default function BookingSystem() {
                 </div>
               </div>
 
-              <button type="submit" className="w-full rounded-full bg-primary py-5 sm:py-8 font-bold uppercase tracking-[0.1em] sm:tracking-widest text-white shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] text-xs sm:text-base">
-                Request Professional Appointment
+              <button type="submit" disabled={submitting} className="w-full rounded-full bg-primary py-5 sm:py-8 font-bold uppercase tracking-[0.1em] sm:tracking-widest text-white shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98] text-xs sm:text-base disabled:opacity-70 disabled:cursor-not-allowed disabled:scale-100 flex items-center justify-center gap-3">
+                {submitting ? <><Loader2 size={18} className="animate-spin" /> Submitting…</> : "Request Professional Appointment"}
               </button>
             </form>
           </motion.div>
@@ -200,7 +248,20 @@ export default function BookingSystem() {
             <p className="mt-6 text-xl text-primary/80 max-w-md mx-auto">
               Our clinical coordinator will contact you shortly to confirm your clinical time and treatment plan.
             </p>
-            <div className="mt-12">
+            {whatsappUrl && (
+              <div className="mt-8">
+                <p className="text-sm text-primary/60 mb-4 uppercase tracking-widest font-bold">Send us a WhatsApp message</p>
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 font-bold text-white shadow-lg transition-all hover:scale-105 active:scale-95"
+                >
+                  <MessageCircle size={20} /> Message Us on WhatsApp
+                </a>
+              </div>
+            )}
+            <div className="mt-8">
               <Button href="/" size="lg">Return to Home</Button>
             </div>
           </motion.div>

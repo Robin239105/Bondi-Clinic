@@ -44,7 +44,7 @@ export default function ContactPage() {
       <div className="relative h-[600px] w-full overflow-hidden grayscale contrast-125 hover:grayscale-0 transition-all duration-1000">
         <iframe
           title="Bondi Skin Clinic map"
-          src="https://www.google.com/maps?q=Bondi%20Beach%20NSW%202026&output=embed"
+          src="https://www.google.com/maps?q=108+Ebley+St+Bondi+Junction+NSW+2022&output=embed"
           className="absolute inset-0 h-full w-full border-0"
           loading="lazy"
         />

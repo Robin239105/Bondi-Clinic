@@ -98,7 +98,7 @@ export default function OrderConfirmationPage() {
                       </div>
                       <div>
                         <p className="text-[10px] uppercase tracking-widest opacity-90">Pickup Location</p>
-                        <p className="text-sm mt-1">Bondi Beach Clinic, NSW 2026</p>
+                        <p className="text-sm mt-1">108 Ebley St, Bondi Junction NSW 2022</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-4 p-6 rounded-3xl bg-white/5 border border-white/10">
@@ -130,11 +130,11 @@ export default function OrderConfirmationPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3 text-sm text-primary/90">
                     <Phone size={16} className="text-gold" />
-                    <span>02 9000 1234</span>
+                    <span>+61 2 9387 1171</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm text-primary/90">
                     <Mail size={16} className="text-gold" />
-                    <span>concierge@bondiskinclinic.com</span>
+                    <span>info@bondiskinclinic.com.au</span>
                   </div>
                 </div>
               </div>
@@ -185,9 +185,9 @@ export default function OrderConfirmationPage() {
             </div>
             <div className="text-right">
               <p className="text-[8px] uppercase tracking-widest text-primary/70 font-bold mb-2">Clinic Location</p>
-              <p className="font-display text-xl italic">Bondi Beach Clinic</p>
-              <p className="text-xs opacity-90 mt-1">123 Bondi Road, NSW 2026</p>
-              <p className="text-xs opacity-90">Tel: 02 9000 1234</p>
+              <p className="font-display text-xl italic">Bondi Skin Clinic</p>
+              <p className="text-xs opacity-90 mt-1">108 Ebley St, Bondi Junction NSW 2022</p>
+              <p className="text-xs opacity-90">Tel: +61 2 9387 1171</p>
             </div>
           </div>
 

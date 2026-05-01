@@ -92,7 +92,7 @@ export default function Footer() {
               </div>
               <div className="text-[11px] tracking-wide">
                 <p className="text-white/60 uppercase font-bold">Find Us</p>
-                <p className="text-white mt-0.5">Bondi Beach, NSW 2026</p>
+                <p className="text-white mt-0.5">108 Ebley St, Bondi Junction NSW 2022</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -101,7 +101,7 @@ export default function Footer() {
               </div>
               <div className="text-[11px] tracking-wide">
                 <p className="text-white/60 uppercase font-bold">Call Us</p>
-                <p className="text-white mt-0.5">02 9000 1234</p>
+                <p className="text-white mt-0.5">+61 2 9387 1171</p>
               </div>
             </div>
             <div className="flex items-center gap-4 sm:col-span-2 lg:col-span-1">

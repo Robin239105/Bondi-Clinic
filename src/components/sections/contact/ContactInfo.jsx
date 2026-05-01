@@ -1,8 +1,8 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 
 const details = [
-  [MapPin, "Bondi Beach, NSW 2026"],
-  [Phone, "02 9000 1234"],
+  [MapPin, "108 Ebley St, Bondi Junction NSW 2022"],
+  [Phone, "+61 2 9387 1171"],
   [Mail, "info@bondiskinclinic.com.au"],
   [Clock, "Mon-Fri 9am-6pm, Sat 9am-3pm"],
 ];

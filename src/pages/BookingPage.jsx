@@ -55,7 +55,7 @@ export default function BookingPage() {
                     </div>
                     <div>
                       <p className="text-[10px] uppercase tracking-widest text-primary/70 font-bold">Location</p>
-                      <p className="mt-1 text-sm text-primary">Bondi Beach, NSW 2026</p>
+                      <p className="mt-1 text-sm text-primary">108 Ebley St, Bondi Junction NSW 2022</p>
                     </div>
                   </div>
 
@@ -65,7 +65,7 @@ export default function BookingPage() {
                     </div>
                     <div>
                       <p className="text-[10px] uppercase tracking-widest text-primary/70 font-bold">Call Us</p>
-                      <p className="mt-1 text-sm text-primary">02 9000 1234</p>
+                      <p className="mt-1 text-sm text-primary">+61 2 9387 1171</p>
                     </div>
                   </div>
 
@@ -75,7 +75,7 @@ export default function BookingPage() {
                     </div>
                     <div>
                       <p className="text-[10px] uppercase tracking-widest text-primary/70 font-bold">Email</p>
-                      <p className="mt-1 text-sm text-primary">hello@bondiskinclinic.com</p>
+                      <p className="mt-1 text-sm text-primary">info@bondiskinclinic.com.au</p>
                     </div>
                   </div>
                 </div>

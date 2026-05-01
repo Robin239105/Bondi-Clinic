@@ -4,7 +4,7 @@ import Button from "../../ui/Button";
 
 export default function AboutSection() {
   return (
-    <section className="section-pad bg-surface">
+    <section className="section-pad bg-cream">
       <div className="container-wide grid items-center gap-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-24">
         <div className="grid grid-cols-[1fr_0.72fr] gap-4 lg:gap-6">
           <img src={images.clinic} alt="Bondi Skin Clinic treatment room" loading="lazy" width="900" height="1100" className="aspect-[4/5] w-full object-cover shadow-warm rounded-[2rem] lg:rounded-[3rem]" />

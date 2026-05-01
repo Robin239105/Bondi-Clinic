@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { CheckCircle2, Download, Printer, MapPin, Mail, Phone, Calendar, Clock, ShoppingBag } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,7 +9,6 @@ import Button from "../components/ui/Button";
 export default function OrderConfirmationPage() {
   const { lastOrder } = useCart();
   const navigate = useNavigate();
-  const invoiceRef = useRef(null);
 
   useEffect(() => {
     // If no order found, redirect back to shop
@@ -17,13 +16,6 @@ export default function OrderConfirmationPage() {
       navigate("/shop");
       return;
     }
-
-    // Trigger auto-print after 2s to let animations finish
-    const timer = setTimeout(() => {
-      window.print();
-    }, 2000);
-
-    return () => clearTimeout(timer);
   }, [lastOrder, navigate]);
 
   if (!lastOrder) return null;

@@ -29,7 +29,7 @@ export default function BeforeAfterSection() {
             </blockquote>
             <div className="mt-8 flex items-center gap-4">
               <div className="h-12 w-12 overflow-hidden rounded-full ring-2 ring-gold/20">
-                <img src="/images/avatars/avatar1.png" alt="Sarah J." className="h-full w-full object-cover" />
+                <img src="/images/WhatsApp-Image-2024-05-28-at-6.22.33-AM.jpeg" alt="Sarah J." className="h-full w-full object-cover" />
               </div>
               <div>
                 <div className="font-bold text-primary">Sarah J.</div>

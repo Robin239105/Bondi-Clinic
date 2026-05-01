@@ -1,33 +1,6 @@
 import { ShieldCheck, Sparkles, HeartPulse } from "lucide-react";
 import SectionLabel from "../../ui/SectionLabel";
 
-const features = [
-  {
-    title: "Personalized Care",
-    description: "Every treatment is tailored to your unique skin type, goals, and lifestyle.",
-    Icon: HeartPulse,
-    bg: "bg-gold/5",
-    iconBg: "bg-gold/10",
-    iconColor: "text-gold",
-  },
-  {
-    title: "Science & Expertise",
-    description: "Led by professionals using safe, proven techniques and cutting-edge technology.",
-    Icon: ShieldCheck,
-    bg: "bg-gold/5",
-    iconBg: "bg-gold/10",
-    iconColor: "text-gold",
-  },
-  {
-    title: "Holistic Wellness",
-    description: "We focus on enhancing natural beauty while prioritizing skin health and well-being.",
-    Icon: Sparkles,
-    bg: "bg-primary/5",
-    iconBg: "bg-primary/10",
-    iconColor: "text-primary",
-  },
-];
-
 export default function WhyChooseUs() {
   return (
     <section className="section-pad bg-white">

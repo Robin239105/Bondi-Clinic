@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, AlertCircle, Clock, DollarSign, Calendar, ChevronDown, ArrowRight } from "lucide-react";
+import { CheckCircle2, AlertCircle, Clock, DollarSign, Calendar, ChevronDown } from "lucide-react";
 import { skinTreatments } from "../data/skinTreatments";
 import { bodyTreatments } from "../data/bodyTreatments";
 import { laserTreatments } from "../data/laserTreatments";

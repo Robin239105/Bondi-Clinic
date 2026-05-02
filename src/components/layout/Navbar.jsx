@@ -1,8 +1,48 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronRight, ChevronDown, Menu, X } from "lucide-react";
+import {
+  ChevronRight, ChevronDown, Menu, X,
+  Layers, Sun, Sparkles, Droplets, ScanFace, Shield, Zap, Eye, Star,
+  Waves, Activity, Wind, PersonStanding,
+  Scissors, RefreshCw, Droplet, MicOff, FlaskConical,
+  Smile, CircleDot, GitBranch, Brain,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Button from "../ui/Button";
+import { skinTreatments } from "../../data/skinTreatments";
+import { bodyTreatments } from "../../data/bodyTreatments";
+import { laserTreatments } from "../../data/laserTreatments";
+import { injectablesTreatments } from "../../data/injectablesTreatments";
+import { prpTreatments } from "../../data/prpTreatments";
+
+const treatmentIcons = {
+  "tixel":           RefreshCw,
+  "jet-plasma":      Zap,
+  "needling":        Sparkles,
+  "facial":          Droplets,
+  "nanofrac":        Layers,
+  "dermafrac":       ScanFace,
+  "led":             Sun,
+  "ipl":             Eye,
+  "rf-tightening":   Shield,
+  "tribella":        Star,
+  "sculpt-id":       Waves,
+  "sculpt-flex":     Activity,
+  "octipolar":       PersonStanding,
+  "pelvic-floor":    Wind,
+  "pico-tattoo":     Scissors,
+  "capillary":       Droplet,
+  "romeo-snoring":   MicOff,
+  "juliet-vaginal":  Sparkles,
+  "erbium-resurfacing": RefreshCw,
+  "wrinkles":        Smile,
+  "fillers":         CircleDot,
+  "bio-stimulators": FlaskConical,
+  "pdo-threads":     GitBranch,
+  "prp-skin":        Droplet,
+  "prp-hair":        Brain,
+  "prp-eye":         Eye,
+};
 
 const nav = [
   { label: "Our Story", href: "/our-story" },
@@ -14,6 +54,14 @@ const nav = [
   { label: "Shop", href: "/shop" },
   { label: "Prices", href: "/prices" },
 ];
+
+const megaMenuData = {
+  "Skin": skinTreatments,
+  "Body": bodyTreatments,
+  "Laser": laserTreatments,
+  "Injectables": injectablesTreatments,
+  "PRP": prpTreatments
+};
 
 function Logo() {
   return (
@@ -30,20 +78,6 @@ function Logo() {
     </Link>
   );
 }
-
-import { skinTreatments } from "../../data/skinTreatments";
-import { bodyTreatments } from "../../data/bodyTreatments";
-import { laserTreatments } from "../../data/laserTreatments";
-import { injectablesTreatments } from "../../data/injectablesTreatments";
-import { prpTreatments } from "../../data/prpTreatments";
-
-const megaMenuData = {
-  "Skin": skinTreatments,
-  "Body": bodyTreatments,
-  "Laser": laserTreatments,
-  "Injectables": injectablesTreatments,
-  "PRP": prpTreatments
-};
 
 function DesktopNavItem({ item, active }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -92,31 +126,36 @@ function DesktopNavItem({ item, active }) {
             transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
             className="absolute left-1/2 top-full -translate-x-1/2 pt-4"
           >
-            <div className="w-[640px] overflow-hidden rounded-[2.5rem] border border-primary/5 bg-white p-8 shadow-[0_24px_80px_rgba(26,20,16,0.15)] backdrop-blur-3xl">
+            <div className="w-[700px] overflow-hidden rounded-[2.5rem] border border-primary/5 bg-white p-8 shadow-[0_24px_80px_rgba(26,20,16,0.15)] backdrop-blur-3xl">
               <div className="mb-6 flex items-center justify-between border-b border-primary/5 pb-4">
                 <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold">{item.label} Clinical Menu</span>
-                <span className="text-[10px] text-primary/80 uppercase tracking-widest font-bold">Select Treatment</span>
+                <span className="text-[10px] text-primary/50 uppercase tracking-widest font-bold">Select Treatment</span>
               </div>
-              <div className="grid grid-cols-2 gap-x-6 gap-y-1">
-                {subItems.map((sub) => (
-                  <Link
-                    key={sub.id}
-                    to={`/treatments/${sub.id}`}
-                    className="group flex items-center justify-between rounded-2xl p-4 transition-all hover:bg-primary/5"
-                  >
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium text-primary group-hover:text-gold transition-colors">{sub.name}</span>
-                      <span className="text-[10px] text-primary/90 uppercase tracking-widest mt-1 font-bold">
-                        {sub.prices[0]?.amount ? sub.prices[0].amount.split(' ')[0] : 'Inquire'}
-                      </span>
-                    </div>
-                    <ArrowUpRight size={14} className="text-primary/10 transition-all group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-gold" />
-                  </Link>
-                ))}
+              <div className="grid grid-cols-2 gap-2">
+                {subItems.map((sub) => {
+                  const Icon = treatmentIcons[sub.id];
+                  return (
+                    <Link
+                      key={sub.id}
+                      to={`/treatments/${sub.id}`}
+                      className="group flex items-center gap-3 rounded-2xl p-3 transition-all hover:bg-cream/60"
+                    >
+                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gold/10 text-gold/70 transition-all group-hover:bg-gold/20 group-hover:text-gold">
+                        {Icon ? <Icon size={15} /> : <Sparkles size={15} />}
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-medium text-primary group-hover:text-gold transition-colors leading-tight truncate">{sub.name}</span>
+                        <span className="text-[10px] text-primary/40 uppercase tracking-widest mt-0.5 font-bold">
+                          {sub.prices[0]?.amount ? sub.prices[0].amount.split(' ')[0] : 'Inquire'}
+                        </span>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
-              <div className="mt-8 pt-6 border-t border-primary/5">
-                <Link to={item.href} className="flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/90 hover:text-primary transition-colors">
-                  Explore All {item.label} Solutions <ChevronRight size={12} />
+              <div className="mt-6 pt-5 border-t border-primary/5">
+                <Link to={item.href} className="flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/50 hover:text-gold transition-colors">
+                  Explore All {item.label} Treatments <ChevronRight size={12} />
                 </Link>
               </div>
             </div>
@@ -127,25 +166,6 @@ function DesktopNavItem({ item, active }) {
   );
 }
 
-function ArrowUpRight({ size, className }) {
-  return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      width={size} 
-      height={size} 
-      viewBox="0 0 24 24" 
-      fill="none" 
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-      strokeLinejoin="round" 
-      className={className}
-    >
-      <path d="M7 7h10v10" />
-      <path d="M7 17 17 7" />
-    </svg>
-  );
-}
 
 export default function Navbar({ announcementVisible = true }) {
   const [open, setOpen] = useState(false);
@@ -277,11 +297,12 @@ export default function Navbar({ announcementVisible = true }) {
                                     <Link
                                       key={sub.id}
                                       to={`/treatments/${sub.id}`}
-                                      className="flex items-center justify-between p-4 rounded-2xl bg-white/50 text-sm text-primary/90"
+                                      className="flex items-center gap-3 p-3 rounded-2xl bg-white/50 hover:bg-cream/60 transition-colors"
                                       onClick={() => setOpen(false)}
                                     >
-                                      {sub.name}
-                                      <ChevronRight size={14} className="text-gold" />
+                                      {(() => { const Icon = treatmentIcons[sub.id]; return Icon ? <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gold/10 text-gold"><Icon size={13} /></span> : null; })()}
+                                      <span className="text-sm text-primary/90 flex-1">{sub.name}</span>
+                                      <ChevronRight size={14} className="text-gold/50 shrink-0" />
                                     </Link>
                                   ))}
                                 </div>

@@ -1,27 +1,29 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import AnnouncementBar from "./components/layout/AnnouncementBar";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
 import FloatingCart from "./components/shop/FloatingCart";
-import BodyPage from "./pages/BodyPage";
-import BookingPage from "./pages/BookingPage";
-import ContactPage from "./pages/ContactPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import OrderConfirmationPage from "./pages/OrderConfirmationPage";
-import HomePage from "./pages/HomePage";
-import InjectablesPage from "./pages/InjectablesPage";
-import LaserPage from "./pages/LaserPage";
-import OurStoryPage from "./pages/OurStoryPage";
-import PrpPage from "./pages/PrpPage";
-import PricesPage from "./pages/PricesPage";
-import PrivacyPolicyPage from "./pages/PrivacyPolicyPage";
-import ShopPage from "./pages/ShopPage";
-import SkinPage from "./pages/SkinPage";
-import TermsPage from "./pages/TermsPage";
 import PreFooterCTA from "./components/layout/PreFooterCTA";
-import TreatmentDetailsPage from "./pages/TreatmentDetailsPage";
+import LoadingSpinner from "./components/ui/LoadingSpinner";
+
+const HomePage = lazy(() => import("./pages/HomePage"));
+const OurStoryPage = lazy(() => import("./pages/OurStoryPage"));
+const SkinPage = lazy(() => import("./pages/SkinPage"));
+const BodyPage = lazy(() => import("./pages/BodyPage"));
+const LaserPage = lazy(() => import("./pages/LaserPage"));
+const InjectablesPage = lazy(() => import("./pages/InjectablesPage"));
+const PrpPage = lazy(() => import("./pages/PrpPage"));
+const PricesPage = lazy(() => import("./pages/PricesPage"));
+const ContactPage = lazy(() => import("./pages/ContactPage"));
+const BookingPage = lazy(() => import("./pages/BookingPage"));
+const ShopPage = lazy(() => import("./pages/ShopPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const OrderConfirmationPage = lazy(() => import("./pages/OrderConfirmationPage"));
+const TreatmentDetailsPage = lazy(() => import("./pages/TreatmentDetailsPage"));
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
 
 
 function ScrollToTop() {
@@ -43,6 +45,8 @@ function PageShell({ children }) {
       transition={{ duration: 0.15, ease: [0.23, 1, 0.32, 1] }}
     >
       {children}
+      <PreFooterCTA />
+      <Footer />
     </motion.main>
   );
 }
@@ -57,6 +61,7 @@ export default function App() {
       <AnnouncementBar onVisibleChange={setAnnouncementVisible} />
       <Navbar announcementVisible={announcementVisible} />
       <FloatingCart />
+      <Suspense fallback={<LoadingSpinner />}>
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<PageShell><HomePage /></PageShell>} />
@@ -77,8 +82,7 @@ export default function App() {
           <Route path="/treatments/:id" element={<PageShell><TreatmentDetailsPage /></PageShell>} />
         </Routes>
       </AnimatePresence>
-      <PreFooterCTA />
-      <Footer />
+      </Suspense>
     </>
   );
 }

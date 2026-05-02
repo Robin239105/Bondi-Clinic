@@ -44,6 +44,19 @@ const treatmentIcons = {
   "prp-eye":         Eye,
 };
 
+const pagePreloads = {
+  "/our-story": () => import("../../pages/OurStoryPage"),
+  "/skin":      () => import("../../pages/SkinPage"),
+  "/body":      () => import("../../pages/BodyPage"),
+  "/laser":     () => import("../../pages/LaserPage"),
+  "/injectables": () => import("../../pages/InjectablesPage"),
+  "/prp":       () => import("../../pages/PrpPage"),
+  "/shop":      () => import("../../pages/ShopPage"),
+  "/prices":    () => import("../../pages/PricesPage"),
+  "/booking":   () => import("../../pages/BookingPage"),
+  "/contact":   () => import("../../pages/ContactPage"),
+};
+
 const nav = [
   { label: "Our Story", href: "/our-story" },
   { label: "Skin", href: "/skin" },
@@ -91,6 +104,7 @@ function DesktopNavItem({ item, active }) {
     >
       <Link
         to={item.href}
+        onMouseEnter={() => pagePreloads[item.href]?.()}
         className="relative rounded-full px-5 py-3.5 transition-colors"
       >
         {/* Active Indicator (Persistent) */}

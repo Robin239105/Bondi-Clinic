@@ -28,7 +28,9 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           customer_name: fd.get("name"),
           customer_email: fd.get("email"),
-          customer_address: deliveryMethod === "shipping" ? fd.get("address") : "Clinic Pickup",
+          customer_address: deliveryMethod === "shipping" 
+            ? `${fd.get("address")}, ${fd.get("suburb")}, ${fd.get("state")} ${fd.get("postcode")}` 
+            : "Clinic Pickup",
           delivery_method: deliveryMethod,
           payment_method: paymentMethod,
           total: cartTotal,
@@ -128,9 +130,9 @@ export default function CheckoutPage() {
                     <input required name="address" type="text" placeholder="123 Bondi Rd" className="w-full rounded-2xl border border-primary/5 bg-white p-6 focus:border-primary transition-all outline-none" />
                   </div>
                   <div className="grid gap-6 md:grid-cols-3">
-                    <input required type="text" placeholder="Suburb" className="w-full rounded-2xl border border-primary/5 bg-white p-6 focus:border-primary transition-all outline-none" />
-                    <input required type="text" placeholder="State" className="w-full rounded-2xl border border-primary/5 bg-white p-6 focus:border-primary transition-all outline-none" />
-                    <input required type="text" placeholder="Postcode" className="w-full rounded-2xl border border-primary/5 bg-white p-6 focus:border-primary transition-all outline-none" />
+                    <input required name="suburb" type="text" placeholder="Suburb" className="w-full rounded-2xl border border-primary/5 bg-white p-6 focus:border-primary transition-all outline-none" />
+                    <input required name="state" type="text" placeholder="State" className="w-full rounded-2xl border border-primary/5 bg-white p-6 focus:border-primary transition-all outline-none" />
+                    <input required name="postcode" type="text" placeholder="Postcode" className="w-full rounded-2xl border border-primary/5 bg-white p-6 focus:border-primary transition-all outline-none" />
                   </div>
                 </div>
               ) : (

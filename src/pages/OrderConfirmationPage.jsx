@@ -234,7 +234,7 @@ export default function OrderConfirmationPage() {
       
       <style>{`
         @media print {
-          @page { size: auto;  margin: 0mm; }
+          @page { size: A4; margin: 10mm; }
           body { margin: 0; background: white; }
           .bg-cream { background: white !important; }
           body * {
@@ -248,8 +248,15 @@ export default function OrderConfirmationPage() {
             left: 0;
             top: 0;
             width: 100%;
-            height: 100vh;
-            overflow: hidden;
+            height: auto;
+            min-height: 100%;
+            overflow: visible;
+          }
+          .print-content table {
+            page-break-inside: avoid;
+          }
+          .print-content tr {
+            page-break-inside: avoid;
           }
         }
       `}</style>

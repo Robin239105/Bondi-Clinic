@@ -1,30 +1,28 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { CheckCircle2, AlertCircle, Clock, DollarSign, Calendar, ChevronDown } from "lucide-react";
-import { skinTreatments } from "../data/skinTreatments";
-import { bodyTreatments } from "../data/bodyTreatments";
-import { laserTreatments } from "../data/laserTreatments";
-import { injectablesTreatments } from "../data/injectablesTreatments";
-import { prpTreatments } from "../data/prpTreatments";
+import { CheckCircle2, AlertCircle, Clock, ChevronDown } from "lucide-react";
+import { useTreatmentBySlug } from "../hooks/useTreatments";
 import Button from "../components/ui/Button";
 import SectionLabel from "../components/ui/SectionLabel";
 import SEO from "../components/layout/SEO";
 
-const allTreatments = [
-  ...skinTreatments,
-  ...bodyTreatments,
-  ...laserTreatments,
-  ...injectablesTreatments,
-  ...prpTreatments
-];
-
 export default function TreatmentDetailsPage() {
   const { id } = useParams();
-  const treatment = allTreatments.find((t) => t.id === id);
+  const { treatment, loading, error } = useTreatmentBySlug(id);
   const [activeFaq, setActiveFaq] = useState(null);
 
-  if (!treatment) {
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-cream">
+        <div className="text-center">
+          <div className="animate-pulse h-12 w-48 bg-stone-200 rounded mx-auto"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !treatment) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-cream">
         <SEO title="Treatment Not Found" url={`/treatments/${id}`} />
@@ -36,8 +34,27 @@ export default function TreatmentDetailsPage() {
     );
   }
 
-  // Fallback FAQs if not present in data
-  const faqs = treatment.faqs || [
+  // Map API data to component format
+  const mappedTreatment = {
+    id: treatment.id,
+    slug: treatment.slug,
+    name: treatment.name,
+    description: treatment.description,
+    risks: treatment.risks,
+    image: treatment.image_url,
+    prices: treatment.prices?.map(p => ({
+      label: p.label,
+      amount: p.amount,
+      note: p.note
+    })) || [],
+    faqs: treatment.faqs?.map(f => ({
+      q: f.question,
+      a: f.answer
+    })) || []
+  };
+
+  // Use API FAQs or fallback
+  const faqs = mappedTreatment.faqs.length > 0 ? mappedTreatment.faqs : [
     {
       q: "How many sessions are recommended?",
       a: "While results can often be seen after a single session, we typically recommend a course of 3 to 6 treatments spaced 4-6 weeks apart for optimal, long-lasting results."
@@ -59,16 +76,16 @@ export default function TreatmentDetailsPage() {
   return (
     <div className="bg-cream min-h-screen">
       <SEO 
-        title={treatment.name}
-        description={treatment.description?.substring(0, 160)}
-        url={`/treatments/${treatment.id}`}
-        keywords={`${treatment.name.toLowerCase()}, ${treatment.name.toLowerCase()} bondi, skin treatment bondi`}
+        title={mappedTreatment.name}
+        description={mappedTreatment.description?.substring(0, 160)}
+        url={`/treatments/${mappedTreatment.slug || mappedTreatment.id}`}
+        keywords={`${mappedTreatment.name.toLowerCase()}, ${mappedTreatment.name.toLowerCase()} bondi, skin treatment bondi`}
       />
       {/* Hero Section */}
       <section className="relative h-[60vh] lg:h-[80vh] overflow-hidden">
         <img 
-          src={treatment.image} 
-          alt={treatment.name} 
+          src={mappedTreatment.image} 
+          alt={mappedTreatment.name} 
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent" />
@@ -82,7 +99,7 @@ export default function TreatmentDetailsPage() {
           >
             <SectionLabel className="text-gold mb-6">Bondi Clinical Treatment</SectionLabel>
             <h1 className="display-heading text-6xl lg:text-8xl text-white leading-tight">
-              {treatment.name}
+              {mappedTreatment.name}
             </h1>
           </motion.div>
         </div>
@@ -99,7 +116,7 @@ export default function TreatmentDetailsPage() {
                 <SectionLabel>The Procedure</SectionLabel>
                 <h2 className="display-heading text-4xl lg:text-5xl text-primary mt-6">Clinical overview</h2>
                 <p className="mt-8 text-lg lg:text-xl text-primary/90 leading-relaxed font-normal whitespace-pre-line">
-                  {treatment.description}
+                  {mappedTreatment.description}
                 </p>
               </div>
 
@@ -188,7 +205,7 @@ export default function TreatmentDetailsPage() {
               <div className="sticky top-32 bg-white p-6 lg:p-12 rounded-[3rem] shadow-2xl border border-primary/5">
                 <h3 className="font-display text-3xl text-primary">Treatment Investment</h3>
                 <div className="mt-10 space-y-6">
-                  {treatment.prices.map((p, i) => (
+                  {mappedTreatment.prices.map((p, i) => (
                     <div key={i} className="flex justify-between items-center gap-4">
                       <div>
                         <p className="font-medium text-primary">{p.label}</p>
@@ -215,14 +232,14 @@ export default function TreatmentDetailsPage() {
               </div>
 
               {/* Safety/Risks */}
-              {treatment.risks && (
+              {mappedTreatment.risks && (
                 <div className="bg-primary/5 p-10 rounded-[2.5rem] border border-primary/5">
                   <h3 className="font-display text-2xl text-primary mb-6 flex items-center gap-3">
                     <ShieldCheck className="text-gold" size={24} />
                     Clinical Safety
                   </h3>
                   <p className="text-sm text-primary/90 leading-relaxed">
-                    {treatment.risks}
+                    {mappedTreatment.risks}
                   </p>
                 </div>
               )}

@@ -1,21 +1,17 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronRight, Calendar, User, ClipboardList, CheckCircle2, ArrowLeft, MessageCircle, AlertCircle, Loader2 } from "lucide-react";
 import Button from "../../ui/Button";
-import { skinTreatments } from "../../../data/skinTreatments";
-import { bodyTreatments } from "../../../data/bodyTreatments";
-import { laserTreatments } from "../../../data/laserTreatments";
-import { injectablesTreatments } from "../../../data/injectablesTreatments";
-import { prpTreatments } from "../../../data/prpTreatments";
+import { useTreatments } from "../../../hooks/useTreatments";
 
 const API_URL = import.meta.env.VITE_API_URL || "";
 
 const categories = [
-  { id: "skin", label: "Skin Health", icon: "✨", treatments: skinTreatments },
-  { id: "body", label: "Body Contouring", icon: "🧘", treatments: bodyTreatments },
-  { id: "laser", label: "Laser Excellence", icon: "⚡", treatments: laserTreatments },
-  { id: "injectables", label: "Medical Injectables", icon: "💉", treatments: injectablesTreatments },
-  { id: "prp", label: "PRP Therapy", icon: "🩸", treatments: prpTreatments },
+  { id: "skin", label: "Skin Health", icon: "✨" },
+  { id: "body", label: "Body Contouring", icon: "🧘" },
+  { id: "laser", label: "Laser Excellence", icon: "⚡" },
+  { id: "injectables", label: "Medical Injectables", icon: "💉" },
+  { id: "prp", label: "PRP Therapy", icon: "🩸" },
 ];
 
 export default function BookingSystem() {
@@ -28,6 +24,9 @@ export default function BookingSystem() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [whatsappUrl, setWhatsappUrl] = useState("");
+  
+  // Fetch treatments when category is selected
+  const { treatments, loading: treatmentsLoading, error: treatmentsError } = useTreatments(selection.category?.id);
 
   const nextStep = () => setStep(s => s + 1);
   const prevStep = () => setStep(s => s - 1);
@@ -149,21 +148,35 @@ export default function BookingSystem() {
               </div>
             </div>
 
-            <div className="grid gap-4">
-              {selection.category?.treatments.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => handleServiceSelect(t)}
-                  className="group flex flex-col items-start rounded-3xl border border-primary/5 bg-cream/30 p-6 sm:p-8 text-left transition-all hover:bg-primary hover:text-white"
-                >
-                  <div className="flex w-full items-center justify-between">
-                    <span className="font-display text-2xl">{t.name}</span>
-                    <span className="font-bold text-gold group-hover:text-gold-light">{t.prices[0]?.amount}</span>
-                  </div>
-                  <p className="mt-2 text-sm opacity-80 max-w-xl">{t.description}</p>
-                </button>
-              ))}
-            </div>
+            {treatmentsLoading ? (
+              <div className="grid gap-4">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="bg-stone-200 h-24 rounded-3xl animate-pulse"></div>
+                ))}
+              </div>
+            ) : treatmentsError ? (
+              <p className="text-red-600 text-center">Failed to load treatments. Please try again.</p>
+            ) : (
+              <div className="grid gap-4">
+                {treatments.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => handleServiceSelect({
+                      id: t.id,
+                      name: t.name,
+                      prices: t.prices?.map(p => ({ amount: p.amount, label: p.label, note: p.note })) || []
+                    })}
+                    className="group flex flex-col items-start rounded-3xl border border-primary/5 bg-cream/30 p-6 sm:p-8 text-left transition-all hover:bg-primary hover:text-white"
+                  >
+                    <div className="flex w-full items-center justify-between">
+                      <span className="font-display text-2xl">{t.name}</span>
+                      <span className="font-bold text-gold group-hover:text-gold-light">{t.prices?.[0]?.amount}</span>
+                    </div>
+                    <p className="mt-2 text-sm opacity-80 max-w-xl line-clamp-2">{t.description}</p>
+                  </button>
+                ))}
+              </div>
+            )}
           </motion.div>
         )}
 

@@ -1,6 +1,8 @@
 import TreatmentCard from "../../ui/TreatmentCard";
 import { useTreatments } from "../../../hooks/useTreatments";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 export default function TreatmentList() {
   const { treatments, loading, error } = useTreatments("injectables");
 
@@ -10,7 +12,7 @@ export default function TreatmentList() {
     name: t.name,
     description: t.description,
     risks: t.risks,
-    image: t.image_url,
+    image: t.image_url ? `${API_URL}${t.image_url}` : null,
     prices: t.prices?.map(p => ({ label: p.label, amount: p.amount, note: p.note })) || [],
     faqs: t.faqs?.map(f => ({ q: f.question, a: f.answer })) || []
   }));

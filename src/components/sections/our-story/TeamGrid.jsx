@@ -1,6 +1,8 @@
 import { useTeam } from "../../../hooks/useTeam";
 import TeamCard from "../../ui/TeamCard";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 export default function TeamGrid() {
   const { members, loading, error } = useTeam();
 
@@ -11,7 +13,7 @@ export default function TeamGrid() {
     bio: m.bio,
     yearsExp: m.years_exp,
     expertise: m.expertise,
-    image: m.image_url,
+    image: m.image_url ? `${API_URL}${m.image_url}` : null,
   }));
 
   if (loading) {

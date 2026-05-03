@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import { useProducts } from "../../../hooks/useProducts";
 import ProductCard from "../../ui/ProductCard";
 
+const API_URL = import.meta.env.VITE_API_URL || "";
+
 export default function ProductGrid() {
   const [filter, setFilter] = useState("All");
   const { products: apiProducts, loading, error } = useProducts();
@@ -13,7 +15,7 @@ export default function ProductGrid() {
       name: p.name,
       category: p.brand || p.category,
       price: `$${parseFloat(p.price).toFixed(2)}`,
-      image: p.image_url,
+      image: p.image_url ? `${API_URL}${p.image_url}` : null,
       description: p.description,
     }));
   }, [apiProducts]);

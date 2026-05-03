@@ -25,8 +25,17 @@ export default function ContactForm() {
           message: fd.get("message"),
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.errors?.[0]?.msg || data?.error || "Submission failed");
+
+      let data;
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(text?.substring(0, 200) || `Server error ${res.status}`);
+      }
+
+      if (!res.ok) throw new Error(data?.errors?.[0]?.msg || data?.error || `Submission failed (${res.status})`);
       setSubmitted(true);
       e.target.reset();
     } catch (err) {

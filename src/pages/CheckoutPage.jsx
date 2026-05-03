@@ -28,8 +28,8 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           customer_name: fd.get("name"),
           customer_email: fd.get("email"),
-          customer_address: deliveryMethod === "shipping" 
-            ? `${fd.get("address")}, ${fd.get("suburb")}, ${fd.get("state")} ${fd.get("postcode")}` 
+          customer_address: deliveryMethod === "shipping"
+            ? `${fd.get("address")}, ${fd.get("suburb")}, ${fd.get("state")} ${fd.get("postcode")}`
             : "Clinic Pickup",
           delivery_method: deliveryMethod,
           payment_method: paymentMethod,
@@ -41,8 +41,17 @@ export default function CheckoutPage() {
           })),
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.errors?.[0]?.msg || data?.error || "Order failed");
+
+      let data;
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        data = await res.json();
+      } else {
+        const text = await res.text();
+        throw new Error(text?.substring(0, 200) || `Server error ${res.status}`);
+      }
+
+      if (!res.ok) throw new Error(data?.errors?.[0]?.msg || data?.error || `Order failed (${res.status})`);
       setLastOrder({
         orderId: data.order?.order_ref,
         date: new Date().toLocaleDateString("en-AU", { day: "numeric", month: "long", year: "numeric" }),
